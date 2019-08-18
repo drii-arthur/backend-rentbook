@@ -16,11 +16,10 @@ module.exports = {
 
     addDataGenre: (req, res) => {
         const data = {
-
             genre_name: req.body.genre_name
         }
         modelGenre.insertDataGenre(data)
-            .then(result => res.json(result))
+            .then(result => res.json({ message: 'add success' }))
             .catch(err => {
                 console.log(err)
             })
@@ -31,9 +30,8 @@ module.exports = {
     editDataGenre: (req, res) => {
         const id_data = req.params.id_genre
         const data = req.body
-
         modelGenre.updateDataGenre(data, id_data)
-            .then(result => res.json(result))
+            .then(result => res.json({ message: "success for updated" }))
             .catch(err => {
                 console.log(err)
             })
@@ -42,10 +40,9 @@ module.exports = {
     // this is function for remove genre data
 
     removeDataGenre: (req, res) => {
-        const id_data = req.params.id_data
-
-        modelGenre.deletedDataGenre(id_data)
-            .then(result => res.json(result))
+        const id_genre = req.params.id_genre
+        modelGenre.deletedDataGenre(id_genre)
+            .then(result => res.json({ message: 'success for deleted' }))
             .catch(err => {
                 console.log(err)
             })

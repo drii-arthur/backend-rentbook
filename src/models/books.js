@@ -3,13 +3,13 @@ const conn = require('../configs/db')
 module.exports = {
     getList: (keyword, sort, status, limit, offset) => {
         return new Promise((resolve, reject) => {
-            let query = `SELECT id_books, title, description, image, date_released, genre_name AS genre, status
+            let query = `SELECT id_books, title, description, image, date_released, genre_name AS genre, status, created_at,update_at
             FROM books
             inner JOIN genre
             ON genre = id_genre`
 
             if (keyword != null || sort != null || status != null) {
-                query += ` WHERE`
+                query += keyword || status ? ` WHERE` : ''
                 query += status ? ` status = ${status}` : ''
                 query += keyword && status ? ` AND` : ''
                 query += keyword ? ` title LIKE '%${keyword}%'` : ''

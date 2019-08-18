@@ -45,9 +45,9 @@ module.exports = {
 
     // function for delete  data genre by id
 
-    deletedDataGenre: (id_data) => {
-        return new Promise((resolve, result) => {
-            conn.query('DELETE genre SET ? WHERE id_genre = ?', id_data, (err, result) => {
+    deletedDataGenre: (id) => {
+        return new Promise((resolve, reject) => {
+            conn.query('DELETE FROM genre WHERE id_genre = ?', id, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {

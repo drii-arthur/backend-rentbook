@@ -1,5 +1,4 @@
-const respons = require('../response/response')
-const modelProduct = require('../models/product')
+const modelProduct = require('../models/books')
 
 module.exports = {
 
@@ -11,7 +10,13 @@ module.exports = {
         const limit = req.query.limit || 3
         const offset = (page - 1) * limit
         modelProduct.getList(keyword, sort, status, limit, offset)
-            .then(result => res.json(result))
+            .then(result => {
+                if (result.length != 0) {
+                    res.json(result)
+                } else {
+                    res.json({ message: 'data not pound' })
+                }
+            })
             .catch(err => {
                 console.log(err)
             })
@@ -34,12 +39,14 @@ module.exports = {
             title: req.body.title,
             description: req.body.description,
             image: req.body.image,
-            date_released: new Date,
+            date_released: req.body.date,
             genre: req.body.genre,
-            status: req.body.status
+            status: req.body.status,
+            created_at: new Date(),
+            updated_at: new Date()
         }
         modelProduct.insertNewProduct(data)
-            .then(result => res.json(result))
+            .then(result => res.json({ message: "add successfull" }))
             .catch(err => {
                 console.log(err)
             })
@@ -49,15 +56,15 @@ module.exports = {
         const id_book = req.params.id_books
         const data = req.body
         modelProduct.updateProduct(data, id_book)
-            .then(result => res.json(result))
+            .then(result => res.json({ message: "updated successfull" }))
             .catch(err => {
-                console.log(err)
+                console.log("Login First" + err)
             })
     },
     deleteBook: (req, res) => {
         const id_book = req.params.id_books
         modelProduct.deletedProduct(id_book)
-            .then(result => res.json(result))
+            .then(result => res.json({ message: "delete succesfull" }))
             .catch(err => {
                 console.log(err)
             })

@@ -15,9 +15,50 @@ module.exports = {
         })
     },
 
-    getBookData: (id_books) => {
+    getAllBorrowList: (search, sort, status = null, limit, offset) => {
         return new Promise((resolve, reject) => {
-            conn.query('SELECT status FROM  books WHERE id_books = ?', id_books, (err, result) => {
+            let query = 'SELECT id, books.title, users.username, date_transaction, date_return FROM borrow JOIN books ON id_books = books_id JOIN users ON id_user = users_id'
+            const bookStatus = status != null
+            if (search != null || sort != null || bookStatus) {
+                query += ' WHERE'
+                query += search ? ` books_id LIKE '${search}'` : ''
+                query += search && status ? ' AND' : ''
+                query += bookStatus ? ` date_return IS ` : ''
+                query += bookStatus && status == 'returned' ? ` NOT NULL` : ''
+                query += bookStatus && status == 'borrowed' ? ` NULL` : ''
+                query += sort ? ` ORDER BY '${sort}'` : ''
+            }
+            conn.query(`${query} LIMIT ${limit} OFFSET ${offset}`, (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err => {
+                        console.log(err)
+                    })
+                }
+            })
+
+        })
+
+    },
+
+    getOneBorrowings: (id) => {
+        return new Promise((resolve, reject) => {
+            conn.query('SELECT id, books.title, users.username, date_transaction, date_return FROM borrow JOIN books ON id_books = books_id JOIN users ON id_user = users_id WHERE id = ?', id, (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err => {
+                        console.log(err)
+                    })
+                }
+            })
+        })
+    },
+
+    getBookData: (id) => {
+        return new Promise((resolve, reject) => {
+            conn.query('SELECT status FROM  books WHERE id_books = ?', id, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {
