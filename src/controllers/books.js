@@ -7,7 +7,7 @@ module.exports = {
         const sort = req.query.sortby
         const status = req.query.status
         const page = req.query.page || 1
-        const limit = req.query.limit || 3
+        const limit = req.query.limit || 8
         const offset = (page - 1) * limit
         modelProduct.getList(keyword, sort, status, limit, offset)
             .then(result => {
@@ -25,11 +25,46 @@ module.exports = {
     // function get data book by id
 
     getDataBookById: (req, res) => {
-        const id_books = req.params.id_books
+        const id_books = req.params.id
         modelProduct.getDataById(id_books)
             .then(result => res.json(result))
             .catch(err => {
                 console.log(err)
+            })
+    },
+
+
+    getBookYears: (req, res) => {
+        modelProduct.getBookYears()
+            .then(result => {
+                console.log(result)
+                if (result.length !== 0) { res.json(result) }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    },
+
+    getBookByYear: (req, res) => {
+        modelProduct.getBookByYears(req.params.year)
+            .then(result => {
+                if (result.length !== 0) { res.json(result) }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    },
+
+    getBookByGenre: (req, res) => {
+        modelProduct.getBookByGenre(req.params.genre)
+            .then(result => {
+                if (result.length !== 0) {
+                    res.json(result)
+                }
+                else { res.json("books not pound") }
+            })
+            .catch(err => {
+                console.error(err)
             })
     },
 
@@ -41,7 +76,7 @@ module.exports = {
             image: req.body.image,
             date_released: req.body.date,
             genre: req.body.genre,
-            status: req.body.status,
+            status: 1,
             created_at: new Date(),
             updated_at: new Date()
         }
@@ -53,17 +88,17 @@ module.exports = {
     },
     // this is a function for edit book data where id
     editBookData: (req, res) => {
-        const id_book = req.params.id_books
+        const id = req.params.id
         const data = req.body
-        modelProduct.updateProduct(data, id_book)
+        modelProduct.updateProduct(data, id)
             .then(result => res.json({ message: "updated successfull" }))
             .catch(err => {
                 console.log("Login First" + err)
             })
     },
     deleteBook: (req, res) => {
-        const id_book = req.params.id_books
-        modelProduct.deletedProduct(id_book)
+        const id = req.params.id
+        modelProduct.deletedProduct(id)
             .then(result => res.json({ message: "delete succesfull" }))
             .catch(err => {
                 console.log(err)

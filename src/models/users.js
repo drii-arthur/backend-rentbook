@@ -48,6 +48,20 @@ module.exports = {
         })
     },
 
+    getUserByid: (id) => {
+        return new Promise((resolve,reject) => {
+            conn.query(`SELECT * FROM users WHERE id_user = ?`,id,(err,result) => {
+                if(!err){
+                    resolve(result)
+                }else{
+                    reject(err => {
+                        console.log(err)
+                    })
+                }
+            })
+        })
+    },
+
 
     getDatausers: () => {
         return new Promise((resolve, reject) => {

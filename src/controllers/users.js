@@ -111,6 +111,34 @@ module.exports = {
             .catch(err => {
                 console.log(err)
             })
-    }
+    },
+
+    getProfile: (req, res) => {
+        const userProfile = {
+            id: req.id_user,
+            username: req.username,
+            email: req.email,
+            level: req.level
+        }
+        return res.json(userProfile)
+    },
+
+    getUserById: (req, res) => {
+        const id = req.params.id
+
+        modelUsers.getUserByid(id)
+            .then(result => {
+                if (result.length !== 0) {
+                    return res.json(result, result.length)
+                }
+                else {
+                    return res.json({ message: 'user not pound' })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                return responses.getDataResponse(res, 500, err)
+            })
+    },
 
 }

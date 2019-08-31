@@ -59,6 +59,7 @@ module.exports = {
             date_return: new Date()
         }
         const id = req.params.id
+
         modelBorrower.getLatestBorrowing(id)
             .then(result => {
                 console.log(result)

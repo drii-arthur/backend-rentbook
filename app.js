@@ -5,6 +5,7 @@ const app = express()
 const port = process.env.SERVER_PORT || 8081
 const bodyParser = require('body-parser')
 const logger = require('morgan')
+const cors = require('cors')
 const bookRoute = require('./src/routes/books')
 const genreRoute = require('./src/routes/genre')
 const borrowRoute = require('./src/routes/borrow')
@@ -14,6 +15,8 @@ const userRoute = require('./src/routes/users')
 app.listen(port, () => {
     console.log(`Server is running on PORT ${port}`)
 })
+
+app.use(cors())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
