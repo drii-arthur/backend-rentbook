@@ -1,6 +1,24 @@
 const conn = require('../configs/db')
 
 module.exports = {
+    getAllBook: () => {
+        return new Promise((resolve, reject) => {
+            conn.query(`SELECT id_books, title, description, image, date_released, genre_name AS genre, status, created_at,updated_at
+            FROM books
+            inner JOIN genre
+            ON genre = id_genre` , (err, result) => {
+                    if (!err) {
+                        resolve(result)
+                    }
+                    else {
+                        reject(err => {
+                            console.log(err)
+                        })
+                    }
+                })
+
+        })
+    },
     getList: (keyword, sort, status, limit, offset) => {
         return new Promise((resolve, reject) => {
             let query = `SELECT id_books, title, description, image, date_released, genre_name AS genre, status, created_at,updated_at

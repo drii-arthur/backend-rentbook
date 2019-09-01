@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js localhost 3000"
+    "start": "node app.js localhost 3000"
   },
   "author": "Muhammad Pandriadi",
   "license": "ISC",

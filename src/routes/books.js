@@ -5,6 +5,7 @@ const auth = require('../middleware/auth')
 
 Route
 
+    .get('/book/all', productController.getAllBook)
     .get('/book', productController.getAllList)
     .post('/book', auth.verifyTokenMiddleware, auth.verifyAdmin, productController.addBookData)
     .patch('/book/:id', auth.verifyTokenMiddleware, auth.verifyAdmin, productController.editBookData)

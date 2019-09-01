@@ -44,7 +44,7 @@ module.exports = {
 
     getOneBorrowings: (id) => {
         return new Promise((resolve, reject) => {
-            conn.query('SELECT id, books.title, users_id, users.username, date_transaction, date_return FROM borrow JOIN books ON id_books = books_id JOIN users ON id_user = users_id WHERE id = ?', id, (err, result) => {
+            conn.query('SELECT id, books.title, users_id, users.username, date_transaction, date_return FROM borrow JOIN books ON id_books = books_id JOIN users ON id_user = users_id WHERE books_id = ?', id, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {

@@ -2,6 +2,12 @@ const modelProduct = require('../models/books')
 
 module.exports = {
 
+    getAllBook: (req, res) => {
+        modelProduct.getAllBook()
+            .then(result => res.json(result))
+            .catch(err => { console.log(err) })
+    },
+
     getAllList: (req, res) => {
         const keyword = req.query.keyword
         const sort = req.query.sortby
